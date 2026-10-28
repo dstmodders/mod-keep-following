@@ -20,11 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           submodules: true
       - name: Lint
-        uses: dstmodders/action@main
+        uses: dstmodders/action@2c75c4d232f86d778729d3066d1db82b76ab1df3 # main
         with:
           ignore-set-output: true
           luacheck: true
@@ -36,11 +36,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           submodules: true
       - name: Test
-        uses: dstmodders/action@main
+        uses: dstmodders/action@2c75c4d232f86d778729d3066d1db82b76ab1df3 # main
         with:
           busted: true
           ignore-set-output: true
@@ -55,6 +55,6 @@ jobs:
             /bin/bash -c 'busted . && luacov -r lcov && cp luacov.report.out lcov.info'
       - name: Upload coverage to Codecov
         if: ${{ !env.ACT && success() }}
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@b9fd7d16f6d7d1b5d2bec1a2887e65ceed900238 # v4.6.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
