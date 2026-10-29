@@ -1,22 +1,34 @@
 name: CD
 
+permissions:
+  contents: read
+
+concurrency:
+  group: CD-${{ github.ref }}
+  cancel-in-progress: false
+
 on:
   push:
     branches:
       - no-sdk
-
-permissions: read-all
+    paths:
+      - .github/workflows/cd.yml
+      - config.ld
+      - docs/**
+      - modinfo.lua
+      - modmain.lua
+      - scripts/**
+  workflow_dispatch:
 
 jobs:
-  docs:
+  build-docs:
+    if: ${{ github.ref == 'refs/heads/no-sdk' }}
     environment: production-no-sdk
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - name: Check out
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-        with:
-          submodules: true
       - name: Set docker outputs
         id: docker
         run: |
@@ -32,7 +44,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
       - name: Login to the private registry
-        if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ${{ secrets.DOCKER_REGISTRY_HOST }}
@@ -57,6 +68,24 @@ jobs:
           pull: true
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+
+  deploy-docs:
+    needs: build-docs
+    if: ${{ github.ref == 'refs/heads/no-sdk' && needs.build-docs.result == 'success' }}
+    environment: production-no-sdk
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Set docker outputs
+        id: docker
+        run: |
+          {
+            echo 'cert-path=/home/runner/.docker/deploy'
+            echo 'image-name=${{ secrets.DOCKER_REGISTRY_HOST }}/mod-keep-following/docs'
+            echo 'image-tag=no-sdk'
+          } >> "$GITHUB_OUTPUT"
       - name: Add Docker certificates to access the remote host
         run: |
           mkdir -p "${DOCKER_CERT_PATH}"
