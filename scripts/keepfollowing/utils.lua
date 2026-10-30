@@ -13,7 +13,7 @@
 -- @module Utils
 --
 -- @author Victor Popkov
--- @copyright 2019
+-- @copyright 2019-2026
 -- @license MIT
 -- @release 0.21.0
 ----
