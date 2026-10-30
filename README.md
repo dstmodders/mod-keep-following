@@ -28,18 +28,19 @@ another player to keep following or pushing him.
 Don't like the default behaviour? Choose your own configuration to match your
 needs:
 
-| Configuration             | Default   | Description                                                           |
-| ------------------------- | --------- | --------------------------------------------------------------------- |
-| **Action key**            | _LShift_  | Key used for both following and pushing                               |
-| **Push key**              | _LCtrl_   | Key used in combination with an action key for pushing                |
-| **Following method**      | _Default_ | Which following method should be used?                                |
-| **Target distance**       | _2.5m_    | How close can you approach the leader?                                |
-| **Keep target distance**  | _No_      | Should the follower keep the distance from the leader?                |
-| **Push with RMB**         | _No_      | Should the RMB in combination with an action key be used for pushing? |
-| **Push mass checking**    | _Yes_     | Should the mass difference checking be enabled?                       |
-| **Push lag compensation** | _Yes_     | Should the lag compensation be automatically disabled while pushing?  |
-| **Hide changelog**        | _Yes_     | Should the changelog in the mod description be hidden?                |
-| **Debug**                 | _No_      | Should the debug mode be enabled?                                     |
+| Configuration               | Default       | Description                                                           |
+| --------------------------- | ------------- | --------------------------------------------------------------------- |
+| **Action key**              | _Shift_       | Key used for both following and pushing                               |
+| **Push key**                | _Ctrl_        | Key used in combination with an action key for pushing                |
+| **Compatibility**           | _Recommended_ | Which compatibility mode should be used?                              |
+| **Follow method**           | _Default_     | Which follow method should be used?                                   |
+| **Follow distance**         | _2.5m_        | How close can you approach the leader?                                |
+| **Follow distance keeping** | _No_          | Should the follower keep the distance from the leader?                |
+| **Push with RMB**           | _No_          | Should the RMB in combination with an action key be used for pushing? |
+| **Push mass checking**      | _Yes_         | Should the mass difference checking be enabled?                       |
+| **Push lag compensation**   | _Yes_         | Should the lag compensation be automatically disabled while pushing?  |
+| **Hide changelog**          | _Yes_         | Should the changelog in the mod description be hidden?                |
+| **Debug**                   | _No_          | Should the debug mode be enabled?                                     |
 
 ## Documentation
 
