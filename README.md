@@ -8,16 +8,17 @@
 
 ## Overview
 
-Mod for the game [Don't Starve Together][] which is available through the
-[Steam Workshop][] and allows players to follow/push others or one of the
+Mod for the game [Don't Starve Together] which is available through the
+[Steam Workshop] and allows players to follow/push others or one of the
 supported entities.
 
-| Default Keys             | Actions                                        |
-| ------------------------ | ---------------------------------------------- |
-| `Shift` + `LMB`          | to keep following                              |
-| `Shift` + `Ctrl` + `LMB` | to keep pushing and ignore the target distance |
+| Default Keys                                        | Actions                                        |
+| --------------------------------------------------- | ---------------------------------------------- |
+| <kbd>Shift</kbd> + <kbd>LMB</kbd>                   | to keep following                              |
+| <kbd>Shift</kbd> + <kbd>Ctrl</kbd> + <kbd>LMB</kbd> | to keep pushing and ignore the target distance |
 
-To stop following use `WASD` movement keys, `SPACEBAR` action key or click `LMB`.
+To stop following use <kbd>WASD</kbd> movement keys, <kbd>Space</kbd> (in-game
+action key) or click <kbd>LMB</kbd>.
 
 You can also use the above key combinations on a Tent/Siesta Lean-to used by
 another player to keep following or pushing him.
@@ -42,15 +43,9 @@ needs:
 
 ## Documentation
 
-The [LDoc][] documentation generator has been used for generating documentation,
+The [LDoc] documentation generator has been used for generating documentation,
 and the most recent version can be found here:
 https://docs.dstmodders.com/keep-following/v0.21/
-
-## Roadmap
-
-You can always find and track the current states of the upcoming features/fixes
-on the following [Trello][] board:
-https://trello.com/b/De8QnsZd/dst-mod-keep-following
 
 ## License
 
@@ -62,4 +57,3 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [don't starve together]: https://www.klei.com/games/dont-starve-together
 [ldoc]: https://stevedonovan.github.io/ldoc/
 [steam workshop]: https://steamcommunity.com/sharedfiles/filedetails/?id=1835465557
-[trello]: https://trello.com/
