@@ -7,10 +7,10 @@
 --
 -- @classmod KeepFollowing
 --
--- @author Victor Popkov
--- @copyright 2019
+-- @author [Depressed DST Modders](https://github.com/dstmodders)
+-- @copyright 2019-2026
 -- @license MIT
--- @release 0.21.0
+-- @release 0.21.1
 ----
 local Utils = require("keepfollowing/utils")
 
