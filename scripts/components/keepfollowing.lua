@@ -12,7 +12,7 @@
 -- @license MIT
 -- @release 0.21.0
 ----
-local Utils = require "keepfollowing/utils"
+local Utils = require("keepfollowing/utils")
 
 local _FOLLOWING_PATH_THREAD_ID = "following_path_thread"
 local _FOLLOWING_THREAD_ID = "following_thread"
@@ -31,19 +31,20 @@ end)
 -- @section helpers
 
 local function IsOnPlatform(world, inst)
-    if Utils.ChainValidate(world, "Map", "GetPlatformAtPoint")
+    if
+        Utils.ChainValidate(world, "Map", "GetPlatformAtPoint")
         and Utils.ChainValidate(inst, "GetPosition")
     then
         return world.Map:GetPlatformAtPoint(Utils.ChainGet(inst:GetPosition(), "Get", true))
-            and true
+                and true
             or false
     end
 end
 
 local function IsPassable(world, pos)
     return Utils.ChainValidate(world, "Map", "IsPassableAtPoint")
-        and Utils.ChainValidate(pos, "Get")
-        and world.Map:IsPassableAtPoint(pos:Get())
+            and Utils.ChainValidate(pos, "Get")
+            and world.Map:IsPassableAtPoint(pos:Get())
         or false
 end
 
@@ -148,7 +149,7 @@ end
 -- @treturn boolean
 function KeepFollowing:CanBeFollowed(entity) -- luacheck: only
     return Utils.ChainGet(entity, "entity", "IsValid", true)
-        and (entity:HasTag("locomotor") or entity:HasTag("balloon"))
+            and (entity:HasTag("locomotor") or entity:HasTag("balloon"))
         or false
 end
 
@@ -167,7 +168,8 @@ function KeepFollowing:CanBePushed(entity)
     end
 
     local collision_group = Utils.ChainGet(entity, "Physics", "GetCollisionGroup", true)
-    if collision_group == COLLISION.FLYERS -- different flyers don't collide with characters
+    if
+        collision_group == COLLISION.FLYERS -- different flyers don't collide with characters
         or collision_group == COLLISION.SANITY -- Shadow Creatures also don't collide
         or entity:HasTag("bird") -- so does birds
     then
@@ -221,11 +223,13 @@ end
 function KeepFollowing:SetLeader(leader)
     if self:CanBeLeader(leader) then
         self.leader = leader
-        self:DebugString(string.format(
-            "New leader: %s. Distance: %0.2f",
-            leader:GetDisplayName(),
-            math.sqrt(self.inst:GetDistanceSqToPoint(leader:GetPosition()))
-        ))
+        self:DebugString(
+            string.format(
+                "New leader: %s. Distance: %0.2f",
+                leader:GetDisplayName(),
+                math.sqrt(self.inst:GetDistanceSqToPoint(leader:GetPosition()))
+            )
+        )
         return true
     elseif leader == self.inst then
         self:DebugError("You", "can't become a leader")
@@ -297,8 +301,8 @@ local function GetDefaultMethodNextPosition(self, target)
         local step = self.inst.Physics:GetRadius() * 3
         local is_leader_near = self.inst:IsNear(self.leader, target + step)
 
-        if not self.is_leader_near
-            and is_leader_near
+        if
+            not self.is_leader_near and is_leader_near
             or (is_leader_near and self.config.follow_distance_keeping)
         then
             self.leader_positions = {}
@@ -386,11 +390,12 @@ function KeepFollowing:StartFollowingThread()
                     WalkToPoint(self, pos)
                 elseif not stuck and pos_prev ~= pos then
                     stuck_frames = stuck_frames + 1
-                    if stuck_frames * FRAMES > .5 then
+                    if stuck_frames * FRAMES > 0.5 then
                         pos_prev = pos
                         stuck = true
                     end
-                elseif not self:IsIdle()
+                elseif
+                    not self:IsIdle()
                     and stuck
                     and pos_prev == pos
                     and #self.leader_positions > 1
@@ -402,7 +407,7 @@ function KeepFollowing:StartFollowingThread()
             -- closest: player goes to the closest target point from a leader
             pos = GetClosestMethodNextPosition(self, target, is_leader_near)
             if pos then
-                if self:IsIdle() or (not pos_prev or pos:DistSq(pos_prev) > .1) then
+                if self:IsIdle() or (not pos_prev or pos:DistSq(pos_prev) > 0.1) then
                     pos_prev = pos
                     WalkToPoint(self, pos)
                 end
@@ -449,7 +454,8 @@ function KeepFollowing:StartFollowingPathThread()
 
         if IsPassable(self.world, pos) == IsPassable(self.world, pos_prev) then
             -- 1 is the most optimal value so far
-            if pos:DistSq(pos_prev) > 1
+            if
+                pos:DistSq(pos_prev) > 1
                 and pos ~= pos_prev
                 and self.leader_positions[#self.leader_positions] ~= pos
             then
@@ -531,12 +537,14 @@ function KeepFollowing:StopFollowing()
         return false
     end
 
-    self:DebugString(string.format(
-        "Stopped following %s. RPCs: %d. Time: %2.4f",
-        self.leader:GetDisplayName(),
-        self.debug_rpc_counter,
-        os.clock() - self.start_time
-    ))
+    self:DebugString(
+        string.format(
+            "Stopped following %s. RPCs: %d. Time: %2.4f",
+            self.leader:GetDisplayName(),
+            self.debug_rpc_counter,
+            os.clock() - self.start_time
+        )
+    )
 
     self.is_following = false
 
@@ -571,26 +579,32 @@ end
 function KeepFollowing:StartPushingThread()
     local pos, pos_prev
 
-    self.pushing_thread = Utils.ThreadStart(_PUSHING_THREAD_ID, function()
-        if not self.leader or not self.leader.entity:IsValid() then
-            self:DebugError("Leader doesn't exist anymore")
-            self:StopPushing()
-            return
+    self.pushing_thread = Utils.ThreadStart(
+        _PUSHING_THREAD_ID,
+        function()
+            if not self.leader or not self.leader.entity:IsValid() then
+                self:DebugError("Leader doesn't exist anymore")
+                self:StopPushing()
+                return
+            end
+
+            pos = self.leader:GetPosition()
+
+            if self:IsIdle() or (not pos_prev or pos_prev ~= pos) then
+                pos_prev = pos
+                WalkToPoint(self, pos)
+            end
+
+            Sleep(FRAMES)
+        end,
+        function()
+            return self.inst and self.inst:IsValid() and self:IsPushing()
+        end,
+        nil,
+        function()
+            ResetPushingFields(self)
         end
-
-        pos = self.leader:GetPosition()
-
-        if self:IsIdle() or (not pos_prev or pos_prev ~= pos) then
-            pos_prev = pos
-            WalkToPoint(self, pos)
-        end
-
-        Sleep(FRAMES)
-    end, function()
-        return self.inst and self.inst:IsValid() and self:IsPushing()
-    end, nil, function()
-        ResetPushingFields(self)
-    end)
+    )
 end
 
 --- Starts pushing a leader.
@@ -662,12 +676,14 @@ function KeepFollowing:StopPushing()
         return false
     end
 
-    self:DebugString(string.format(
-        "Stopped pushing %s. RPCs: %d. Time: %2.4f",
-        self.leader:GetDisplayName(),
-        self.debug_rpc_counter,
-        os.clock() - self.start_time
-    ))
+    self:DebugString(
+        string.format(
+            "Stopped pushing %s. RPCs: %d. Time: %2.4f",
+            self.leader:GetDisplayName(),
+            self.debug_rpc_counter,
+            os.clock() - self.start_time
+        )
+    )
 
     self.is_pushing = false
 

@@ -1,4 +1,4 @@
-require "busted.runner"()
+require("busted.runner")()
 
 describe("Debug", function()
     -- setup
@@ -11,7 +11,7 @@ describe("Debug", function()
 
     setup(function()
         -- match
-        match = require "luassert.match"
+        match = require("luassert.match")
 
         -- debug
         DebugSpyTerm()
@@ -43,7 +43,7 @@ describe("Debug", function()
         })
 
         -- initialization
-        Debug = require "keepfollowing/debug"
+        Debug = require("keepfollowing/debug")
         Debug = Debug(modname)
 
         -- debug
@@ -53,7 +53,7 @@ describe("Debug", function()
     insulate("initialization", function()
         before_each(function()
             -- initialization
-            Debug = require "keepfollowing/debug"
+            Debug = require("keepfollowing/debug")
             debug = Debug(modname)
         end)
 
@@ -229,9 +229,9 @@ describe("Debug", function()
                             assert.spy(_G.print).was_called(0)
                             debug:DebugString("hello", "world", 1)
                             assert.spy(_G.print).was_called(1)
-                            assert.spy(_G.print).was_called_with(
-                                "[" .. modname .. "] hello world 1"
-                            )
+                            assert
+                                .spy(_G.print)
+                                .was_called_with("[" .. modname .. "] hello world 1")
                         end)
                     end)
                 end)
@@ -242,9 +242,9 @@ describe("Debug", function()
                             assert.spy(_G.print).was_called(0)
                             debug:DebugString("test")
                             assert.spy(_G.print).was_called(1)
-                            assert.spy(_G.print).was_called_with(
-                                "[" .. modname .. "] [thread] test"
-                            )
+                            assert
+                                .spy(_G.print)
+                                .was_called_with("[" .. modname .. "] [thread] test")
                         end)
                     end)
 
@@ -253,9 +253,9 @@ describe("Debug", function()
                             assert.spy(_G.print).was_called(0)
                             debug:DebugString("hello", "world", 1)
                             assert.spy(_G.print).was_called(1)
-                            assert.spy(_G.print).was_called_with(
-                                "[" .. modname .. "] [thread] hello world 1"
-                            )
+                            assert
+                                .spy(_G.print)
+                                .was_called_with("[" .. modname .. "] [thread] hello world 1")
                         end)
                     end)
                 end)
@@ -289,12 +289,9 @@ describe("Debug", function()
                 assert.spy(debug.DebugString).was_called(0)
                 debug:DebugStringStart("hello", "world", 1)
                 assert.spy(debug.DebugString).was_called(1)
-                assert.spy(debug.DebugString).was_called_with(
-                    match.is_ref(debug),
-                    "hello",
-                    "world",
-                    1
-                )
+                assert
+                    .spy(debug.DebugString)
+                    .was_called_with(match.is_ref(debug), "hello", "world", 1)
             end)
         end)
 
@@ -312,13 +309,10 @@ describe("Debug", function()
                     assert.spy(debug.DebugString).was_called(0)
                     debug:DebugStringStop("hello", "world", 1)
                     assert.spy(debug.DebugString).was_called(1)
-                    assert.spy(debug.DebugString).was_called_with(
-                        match.is_ref(debug),
-                        "hello",
-                        "world",
-                        "1.",
-                        "Time: 1.0000"
-                    )
+                    local time = "Time: 1.0000"
+                    assert
+                        .spy(debug.DebugString)
+                        .was_called_with(match.is_ref(debug), "hello", "world", "1.", time)
                 end)
 
                 it("should unset self.start_time", function()
@@ -337,12 +331,9 @@ describe("Debug", function()
                     assert.spy(debug.DebugString).was_called(0)
                     debug:DebugStringStop("hello", "world", 1)
                     assert.spy(debug.DebugString).was_called(1)
-                    assert.spy(debug.DebugString).was_called_with(
-                        match.is_ref(debug),
-                        "hello",
-                        "world",
-                        1
-                    )
+                    assert
+                        .spy(debug.DebugString)
+                        .was_called_with(match.is_ref(debug), "hello", "world", 1)
                 end)
             end)
         end)
@@ -356,12 +347,9 @@ describe("Debug", function()
                 assert.spy(debug.DebugString).was_called(0)
                 debug:DebugInit("hello")
                 assert.spy(debug.DebugString).was_called(1)
-                assert.spy(debug.DebugString).was_called_with(
-                    match.is_ref(debug),
-                    "[life_cycle]",
-                    "Initialized",
-                    "hello"
-                )
+                assert
+                    .spy(debug.DebugString)
+                    .was_called_with(match.is_ref(debug), "[life_cycle]", "Initialized", "hello")
             end)
         end)
 
@@ -374,12 +362,9 @@ describe("Debug", function()
                 assert.spy(debug.DebugString).was_called(0)
                 debug:DebugTerm("hello")
                 assert.spy(debug.DebugString).was_called(1)
-                assert.spy(debug.DebugString).was_called_with(
-                    match.is_ref(debug),
-                    "[life_cycle]",
-                    "Terminated",
-                    "hello"
-                )
+                assert
+                    .spy(debug.DebugString)
+                    .was_called_with(match.is_ref(debug), "[life_cycle]", "Terminated", "hello")
             end)
         end)
 
@@ -392,11 +377,9 @@ describe("Debug", function()
                 assert.spy(debug.DebugString).was_called(0)
                 debug:DebugError("hello")
                 assert.spy(debug.DebugString).was_called(1)
-                assert.spy(debug.DebugString).was_called_with(
-                    match.is_ref(debug),
-                    "[error]",
-                    "hello"
-                )
+                assert
+                    .spy(debug.DebugString)
+                    .was_called_with(match.is_ref(debug), "[error]", "hello")
             end)
         end)
 
@@ -414,7 +397,7 @@ describe("Debug", function()
                             saved = true,
                         },
                         { name = "debug", label = "Debug", default = false, saved = true },
-                    })
+                    }),
                 }
             end)
 
@@ -432,39 +415,24 @@ describe("Debug", function()
                     debug:DebugModConfigs()
                     assert.spy(debug.DebugString).was_called(5)
 
-                    assert.spy(debug.DebugString).was_called_with(
-                        match.is_ref(debug),
-                        "[config]",
-                        "[section]",
-                        "General"
-                    )
+                    assert
+                        .spy(debug.DebugString)
+                        .was_called_with(match.is_ref(debug), "[config]", "[section]", "General")
 
-                    assert.spy(debug.DebugString).was_called_with(
-                        match.is_ref(debug),
-                        "[config]",
-                        "Test:",
-                        "hello"
-                    )
+                    assert
+                        .spy(debug.DebugString)
+                        .was_called_with(match.is_ref(debug), "[config]", "Test:", "hello")
 
-                    assert.spy(debug.DebugString).was_called_with(
-                        match.is_ref(debug),
-                        "[config]",
-                        "[section]",
-                        "Other"
-                    )
+                    assert
+                        .spy(debug.DebugString)
+                        .was_called_with(match.is_ref(debug), "[config]", "[section]", "Other")
 
-                    assert.spy(debug.DebugString).was_called_with(
-                        match.is_ref(debug),
-                        "[config]",
-                        "Hide changelog:",
-                        true
-                    )
-                    assert.spy(debug.DebugString).was_called_with(
-                        match.is_ref(debug),
-                        "[config]",
-                        "Debug:",
-                        true
-                    )
+                    assert
+                        .spy(debug.DebugString)
+                        .was_called_with(match.is_ref(debug), "[config]", "Hide changelog:", true)
+                    assert
+                        .spy(debug.DebugString)
+                        .was_called_with(match.is_ref(debug), "[config]", "Debug:", true)
                 end)
             end)
         end)

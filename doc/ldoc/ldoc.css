@@ -559,7 +559,11 @@ table.index td {
 
 @media print {
   body {
-    font: 12pt 'Times New Roman', 'TimeNR', Times, serif;
+    font:
+      12pt 'Times New Roman',
+      'TimeNR',
+      Times,
+      serif;
   }
 
   a {

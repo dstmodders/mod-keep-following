@@ -12,7 +12,7 @@
 -- @license MIT
 -- @release 0.21.0
 ----
-require "class"
+require("class")
 
 --- Constructor.
 -- @function _ctor
