@@ -23,9 +23,9 @@ lcov.info
 modsettings.lua
 workshop/
 
-# doc
-doc/*
-!doc/.dockerignore
-!doc/docker-stack.yml
-!doc/Dockerfile
-!doc/ldoc/
+# docs
+docs/*
+!docs/.dockerignore
+!docs/docker-stack.yml
+!docs/Dockerfile
+!docs/ldoc/

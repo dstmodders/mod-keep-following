@@ -1,0 +1,127 @@
+name: CD
+
+permissions:
+  contents: read
+
+concurrency:
+  group: CD-${{ github.ref }}
+  cancel-in-progress: false
+
+on:
+  push:
+    branches:
+      - v0.21
+    paths:
+      - .github/workflows/cd.yml
+      - config.ld
+      - docs/**
+      - modinfo.lua
+      - modmain.lua
+      - scripts/**
+  workflow_dispatch:
+
+jobs:
+  build-docs:
+    if: ${{ github.ref == 'refs/heads/v0.21' }}
+    environment: production-v0.21
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Set docker outputs
+        id: docker
+        run: |
+          {
+            echo 'cert-path=/home/runner/.docker/deploy'
+            echo 'image-name=${{ secrets.DOCKER_REGISTRY_HOST }}/mod-keep-following/docs'
+            echo 'image-tag=v0.21'
+          } >> "$GITHUB_OUTPUT"
+      - name: Generate documentation
+        uses: lunarmodules/ldoc@09f82c959c50d8c3d5a968c379b1c75de66b002d # v1.5.0
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+      - name: Login to the private registry
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY_HOST }}
+          username: ${{ secrets.DOCKER_REGISTRY_USER }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASS }}
+      - name: Generate an image metadata
+        id: meta
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        with:
+          flavor: latest=false
+          images: ${{ steps.docker.outputs.image-name }}
+          labels: maintainer=victor@popkov.me
+      - name: Build an image
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        with:
+          cache-from: type=registry,ref=${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          cache-to: type=inline
+          context: ./docs/
+          file: ./docs/Dockerfile
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          pull: true
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+  deploy-docs:
+    needs: build-docs
+    if: ${{ github.ref == 'refs/heads/v0.21' && needs.build-docs.result == 'success' }}
+    environment: production-v0.21
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Set docker outputs
+        id: docker
+        run: |
+          {
+            echo 'cert-path=/home/runner/.docker/deploy'
+            echo 'image-name=${{ secrets.DOCKER_REGISTRY_HOST }}/mod-keep-following/docs'
+            echo 'image-tag=v0.21'
+          } >> "$GITHUB_OUTPUT"
+      - name: Add Docker certificates to access the remote host
+        run: |
+          mkdir -p "${DOCKER_CERT_PATH}"
+          echo "${{ secrets.DOCKER_TLS_CA }}" > "${DOCKER_CERT_PATH}/ca.pem"
+          echo "${{ secrets.DOCKER_TLS_CERT }}" > "${DOCKER_CERT_PATH}/cert.pem"
+          echo "${{ secrets.DOCKER_TLS_KEY }}" > "${DOCKER_CERT_PATH}/key.pem"
+          chmod 400 "${DOCKER_CERT_PATH}/ca.pem"
+          chmod 400 "${DOCKER_CERT_PATH}/cert.pem"
+          chmod 400 "${DOCKER_CERT_PATH}/key.pem"
+        env:
+          DOCKER_CERT_PATH: ${{ steps.docker.outputs.cert-path }}
+      - name: Deploy Docker Stack
+        working-directory: ./docs/
+        run: |
+          docker stack rm "${{ vars.DOCS_DOCKER_STACK_NAME }}"
+          docker stack deploy \
+            --with-registry-auth \
+            --resolve-image=always \
+            --compose-file=docker-stack.yml \
+            --prune \
+            "${{ vars.DOCS_DOCKER_STACK_NAME }}"
+        env:
+          DOCKER_CERT_PATH: ${{ steps.docker.outputs.cert-path }}
+          DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
+          DOCKER_IMAGE_NAME: ${{ steps.docker.outputs.image-name }}
+          DOCKER_IMAGE_TAG: ${{ steps.docker.outputs.image-tag }}
+          DOCKER_STACK_NODE_HOSTNAME: ${{ secrets.DOCKER_STACK_NODE_HOSTNAME }}
+          DOCKER_TLS_VERIFY: 1
+          DOCS_DOCKER_STACK_NETWORK: ${{ vars.DOCS_DOCKER_STACK_NETWORK }}
+          DOCS_TRAEFIK_HOST: ${{ vars.DOCS_TRAEFIK_HOST }}
+          DOCS_TRAEFIK_HTTPS_ROUTER_ENTRYPOINTS: ${{ vars.DOCS_TRAEFIK_HTTPS_ROUTER_ENTRYPOINTS }}
+          DOCS_TRAEFIK_HTTPS_ROUTER_MIDDLEWARES: ${{ vars.DOCS_TRAEFIK_HTTPS_ROUTER_MIDDLEWARES }}
+          DOCS_TRAEFIK_HTTPS_ROUTER_NAME: ${{ vars.DOCS_TRAEFIK_HTTPS_ROUTER_NAME }}
+          DOCS_TRAEFIK_HTTP_ROUTER_ENTRYPOINTS: ${{ vars.DOCS_TRAEFIK_HTTP_ROUTER_ENTRYPOINTS }}
+          DOCS_TRAEFIK_HTTP_ROUTER_MIDDLEWARES: ${{ vars.DOCS_TRAEFIK_HTTP_ROUTER_MIDDLEWARES }}
+          DOCS_TRAEFIK_HTTP_ROUTER_NAME: ${{ vars.DOCS_TRAEFIK_HTTP_ROUTER_NAME }}
+          DOCS_TRAEFIK_PATH_PREFIX: ${{ vars.DOCS_TRAEFIK_PATH_PREFIX }}
+          DOCS_TRAEFIK_SERVICE_NAME: ${{ vars.DOCS_TRAEFIK_SERVICE_NAME }}
+          DOCS_TZ: ${{ vars.DOCS_TZ }}

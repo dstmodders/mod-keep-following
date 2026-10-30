@@ -5,10 +5,9 @@ full_description = [[Mod for the game [Don\'t Starve Together](https://www.klei.
     [[- **Source Code:** [https://github.com/victorpopkov/dst-mod-keep-following](https://github.com/victorpopkov/dst-mod-keep-following)]] .. "\n" ..
     [[- **Steam Workshop:** [https://steamcommunity.com/sharedfiles/filedetails/?id=1835465557](https://steamcommunity.com/sharedfiles/filedetails/?id=1835465557)]]
 
-dir = "doc"
+dir = "docs"
 file = "./scripts/"
 format = "markdown"
-readme = "readme"
 sort_modules = true
-style = "./doc/ldoc/"
+style = "./docs/ldoc/"
 use_markdown_titles = true
