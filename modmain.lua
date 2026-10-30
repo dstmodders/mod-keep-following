@@ -176,7 +176,11 @@ end
 
 ACTION_FOLLOW = AddClientAction("MOD_KEEP_FOLLOWING_FOLLOW", "Follow", ActionFollow)
 ACTION_PUSH = AddClientAction("MOD_KEEP_FOLLOWING_PUSH", "Push", ActionPush)
-ACTION_TENT_FOLLOW = AddClientAction("MOD_KEEP_FOLLOWING_TENT_FOLLOW", "Follow player in", ActionTentFollow)
+ACTION_TENT_FOLLOW = AddClientAction(
+    "MOD_KEEP_FOLLOWING_TENT_FOLLOW",
+    "Follow player in",
+    ActionTentFollow
+)
 ACTION_TENT_PUSH = AddClientAction(
     "MOD_KEEP_FOLLOWING_TENT_PUSH",
     _PUSH_WITH_RMB and "Push player" or "Push player in",
@@ -222,14 +226,14 @@ local function AddPlayerPostInit(onActivatedFn, onDeactivatedFn)
     DebugString("Game ID -", TheSim:GetGameID())
 
     if IsDST() then
-        env.AddPrefabPostInit("world", function(_world)
-            _world:ListenForEvent("playeractivated", function(world, player)
+        env.AddPrefabPostInit("world", function(world)
+            world:ListenForEvent("playeractivated", function(_, player)
                 if player == _G.ThePlayer then
                     onActivatedFn(player, world)
                 end
             end)
 
-            _world:ListenForEvent("playerdeactivated", function(_, player)
+            world:ListenForEvent("playerdeactivated", function(_, player)
                 if player == _G.ThePlayer then
                     onDeactivatedFn(player)
                 end
@@ -254,8 +258,8 @@ local function PlayerActionPickerPostInit(playeractionpicker, player)
     --
 
     local OldDoGetMouseActions = playeractionpicker.DoGetMouseActions
-    playeractionpicker.DoGetMouseActions = function(self, position, _target)
-        local lmb, rmb = OldDoGetMouseActions(self, position, _target)
+    playeractionpicker.DoGetMouseActions = function(self, position, given_target)
+        local lmb, rmb = OldDoGetMouseActions(self, position, given_target)
         if TheInput:IsKeyDown(_KEY_ACTION) then
             local keepfollowing = player.components.keepfollowing
             local buffered = self.inst:GetBufferedAction()

@@ -560,8 +560,8 @@ describe("KeepFollowing", function()
             local function TestHasValidTag(tag, result)
                 describe('and has a "' .. tag .. '" tag', function()
                     before_each(function()
-                        entity.HasTag = spy.new(function(_, _tag)
-                            return _tag == tag
+                        entity.HasTag = spy.new(function(_, entity_tag)
+                            return entity_tag == tag
                         end)
                     end)
 
