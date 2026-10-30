@@ -39,7 +39,7 @@ dst_compatible = true
 reign_of_giants_compatible = false
 shipwrecked_compatible = false
 
-folder_name = folder_name or "dst-mod-keep-following"
+folder_name = folder_name or "mod-keep-following"
 if not folder_name:find("workshop-") then
     name = name .. " (dev)"
 end

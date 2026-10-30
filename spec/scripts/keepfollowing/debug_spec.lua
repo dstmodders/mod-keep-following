@@ -21,7 +21,7 @@ describe("Debug", function()
         _os = _G.os
 
         -- initialization
-        modname = "dst-mod-keep-following"
+        modname = "mod-keep-following"
     end)
 
     teardown(function()

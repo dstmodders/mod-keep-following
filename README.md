@@ -1,4 +1,4 @@
-# dst-mod-keep-following
+# mod-keep-following
 
 [![CI]](https://github.com/dstmodders/mod-keep-following/actions/workflows/ci.yml?query=branch%3Av0.21)
 [![CD]](https://github.com/dstmodders/mod-keep-following/actions/workflows/cd.yml?query=branch%3Av0.21)

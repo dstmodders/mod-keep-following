@@ -428,7 +428,7 @@ describe("Utils", function()
                 local modname
 
                 before_each(function()
-                    modname = "dst-mod-keep-following"
+                    modname = "mod-keep-following"
                 end)
 
                 describe("and enabling", function()
