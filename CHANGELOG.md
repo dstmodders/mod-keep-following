@@ -2,287 +2,287 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased][]
+## [Unreleased]
 
-## [0.21.0][] - 2020-08-26
+## [0.21.0] - 2020-08-26
 
 ### Added
 
-- Compatibility configuration
+- Add "Compatibility" configuration
 
 ### Changed
 
-- Following configurations
-- Improved interruptions behaviour
-- Improved keybinds configurations
-- Improved mouse overrides
+- Change following configurations
+- Improve interruptions behaviour
+- Improve keybinds configurations
+- Improve mouse overrides
 
-## [0.20.1][] - 2020-08-25
+## [0.20.1] - 2020-08-25
 
 ### Fixed
 
-- Issue with `TEST` global
+- Fix issue with `TEST` global
 
-## [0.20.0][] - 2020-08-25
+## [0.20.0] - 2020-08-25
 
 ### Added
 
-- Support for the hide changelog configuration
-- Tests and documentation
+- Add "Hide Changelog" configuration
+- Add tests and documentation
 
 ### Changed
 
-- Configuration to be divided into sections
-- Refactored most of the existing code
+- Refactor most of the existing code
+- Split configuration into sections
 
 ### Removed
 
-- Mobs configuration in favour of the "all" behaviour
+- Remove "Mobs" configuration in favour of the "All" behaviour
 
-## [0.19.0][] - 2019-10-04
+## [0.19.0] - 2019-10-04
 
 ### Changed
 
-- Improved compatibility with some other mods
-- Improved debug output
-- Mod icon
+- Change mod icon
+- Improve compatibility with some other mods
+- Improve debug output
 
 ### Removed
 
-- Pushing support for birds
+- Remove pushing support for birds
 
 ### Fixed
 
-- `PlayerActionPicker:DoGetMouseActions()` override
+- Fix `PlayerActionPicker:DoGetMouseActions()` override
 
-## [0.18.0][] - 2019-09-27
+## [0.18.0] - 2019-09-27
 
 ### Added
 
-- Support for `BLINK`, `EQUIP` and `READ` interruptions
-- Support for pushing interruptions
+- Add support for `BLINK`, `EQUIP` and `READ` interruptions
+- Add support for pushing interruptions
 
 ### Changed
 
-- Improved following behaviour
+- Improve the following behaviour
 
 ### Fixed
 
-- Issue forcing original actions in some cases
-- Pausing behaviour related to following interruptions
+- Fix issue forcing original actions in some cases
+- Fix pausing behaviour related to following interruptions
 
-## [0.17.0][] - 2019-09-23
+## [0.17.0] - 2019-09-23
 
 ### Changed
 
-- Improved debug output
-- Improved a leader approaching behaviour in the default mode
-- Improved the target distance calculation
-- Optimized requests while following
+- Improve debug output
+- Improve leader approaching behaviour in the default mode
+- Improve the target distance calculation
+- Optimize requests while following
 
 ### Fixed
 
-- Following interruptions when lag compensation is off
-- Jumping on/off a boat issues while following
+- Fix following interruptions when lag compensation is off
+- Fix jumping on/off a boat issues while following
 
-## [0.16.0][] - 2019-09-21
+## [0.16.0] - 2019-09-21
 
 ### Added
 
-- Support for following interruptions
+- Add support for the following interruptions
 
 ### Fixed
 
-- Client/Server position mismatch during interruptions
-- Some movement issues when lag compensation is off
+- Fix client/server position mismatch during interruptions
+- Fix some movement issues when lag compensation is off
 
-## [0.15.0][] - 2019-09-21
+## [0.15.0] - 2019-09-21
 
 ### Added
 
-- Support for the following method configuration
-- Support for the push mass checking configuration
+- Add "Following Method" configuration
+- Add "Push Mass Checking" configuration
 
 ### Changed
 
-- Improved pathfinding precision
+- Improve the pathfinding precision
 
 ### Fixed
 
-- Selection issue with ActionQueue Reborn
+- Fix selection issue with ActionQueue Reborn
 
-## [0.14.0][] - 2019-09-20
+## [0.14.0] - 2019-09-20
 
 ### Added
 
-- Support for pushing players as a ghost
+- Add support for pushing players as a ghost
 
 ### Changed
 
-- Improved compatibility with some other mods
-- Improved debug output
+- Improve compatibility with some other mods
+- Improve debug output
 
 ### Removed
 
-- Pending tasks in favour of custom threads
+- Remove pending tasks in favour of the custom threads
 
 ### Fixed
 
-- Keeping the target distance behaviour
+- Fix keeping the target distance behaviour
 
-## [0.13.0][] - 2019-09-17
+## [0.13.0] - 2019-09-17
 
 ### Added
 
-- Support for Balloon in all mobs mode
+- Add support for "Balloon" when "Mobs" is set to "All"
 
 ### Changed
 
-- Improved clicking behaviour
+- Improve clicking behaviour
 
 ### Removed
 
-- Pushing support for Shadow Creatures
+- Remove pushing support for "Shadow Creatures"
 
 ### Fixed
 
-- Actions not showing on dedicated in all mobs mode
-- Distance calculation between a follower and a leader
+- Fix actions not showing on dedicated when "Mobs" is set to "All"
+- Fix distance calculation between follower and leader
 
-## [0.12.0][] - 2019-09-16
+## [0.12.0] - 2019-09-16
 
 ### Added
 
-- Stopping on `CONTROL_ACTION`
-- Support for all known mobs
-- Support for mobs configuration
+- Add "Mobs" configuration
+- Add stopping on `CONTROL_ACTION`
+- Add support for all known mobs
 
 ### Changed
 
-- Configuration `pushing_lag_compensation` to `push_lag_compensation`
+- Rename configuration `pushing_lag_compensation` to `push_lag_compensation`
 
 ### Fixed
 
-- Actions not showing in Woodie's Weregoose form
-- Actions not showing when a player becomes a ghost
+- Fix actions not showing in "Woodie's Weregoose" form
+- Fix actions not showing when a player becomes a ghost
 
-## [0.11.0][] - 2019-09-06
+## [0.11.0] - 2019-09-06
 
 ### Added
 
-- Support for Beefalo/Baby Beefalo
+- Add support for "Beefalo/Baby Beefalo"
 
 ### Fixed
 
-- Action not showing when RMB pushing is enabled
-- Behaviour when the leader doesn't exist anymore
+- Fix an action not showing when "Push with RMB" is enabled
+- Fix behaviour when the leader doesn't exist anymore
 
-## [0.10.0][] - 2019-09-05
+## [0.10.0] - 2019-09-05
 
 ### Changed
 
-- Improved debug output
-- Improved mod icon quality
-- Improved pushing lag compensation behaviour
+- Improve debug output
+- Improve mod icon quality
+- Improve the pushing lag compensation behaviour
 
 ### Fixed
 
-- Lag compensation state restoration after pushing
+- Fix lag compensation state restoration after pushing
 
-## [0.9.0][] - 2019-08-25
+## [0.9.0] - 2019-08-25
 
 ### Added
 
-- Support for Balloon
-- Support for pushing lag compensation
-- Support for pushing with RMB
+- Add support for "Balloon"
+- Add support for pushing lag compensation
+- Add support for pushing with RMB
 
 ### Changed
 
-- Improved debug output
+- Improve debug output
 
-## [0.8.0][] - 2019-08-23
+## [0.8.0] - 2019-08-23
 
 ### Added
 
-- Support for more animals
+- Add support for more animals
 
 ### Changed
 
-- Improved compatibility with some other mods
-- Improved debug output
-- Mod icon
+- Change mod icon
+- Improve compatibility with some other mods
+- Improve debug output
 
-## [0.7.0][] - 2019-08-22
-
-### Added
-
-- Support for Abigail and Big Bernie
-- Support for Catcoon, Koalefant, Volt Goat and Mosling
-- Support for stopping following/pushing on LMB click
-
-## [0.6.0][] - 2019-08-20
+## [0.7.0] - 2019-08-22
 
 ### Added
 
-- Support for Bunnymen
-- Support for keeping the target distance configuration
+- Add support for "Abigail" and "Big Bernie"
+- Add support for "Catcoon", "Koalefant", "Volt Goat" and "Mosling"
+- Add support for stopping following/pushing on LMB click
+
+## [0.6.0] - 2019-08-20
+
+### Added
+
+- Add "Keep Target Distance" configuration
+- Add support for "Bunnymen"
 
 ### Changed
 
-- Default action and push keys back to original
-- Improved compatibility with some other mods
+- Improve compatibility with some other mods
+- Revert "Action Key" and "Push Key" configurations
 
-## [0.5.0][] - 2019-08-19
+## [0.5.0] - 2019-08-19
 
 ### Added
 
-- Support for action and push keys configuration
+- Add "Action Key" and "Push Key" configurations
 
 ### Changed
 
-- Default action and push keys
+- Change default action and push keys
 
 ### Fixed
 
-- Crash when entering/leaving cave
+- Fix crash when entering/leaving a cave
 
-## [0.4.0][] - 2019-08-19
+## [0.4.0] - 2019-08-19
 
 ### Added
 
-- Corresponding actions: `FOLLOW`, `PUSH`, `TENTFOLLOW` and `TENTPUSH`
-- Support for disabled lag compensation
+- Add actions: `FOLLOW`, `PUSH`, `TENTFOLLOW` and `TENTPUSH`
+- Add support for disabled lag compensation
 
 ### Changed
 
-- Follow and push behaviours to become separated
-- Input handlers to be inside modmain
+- Move input handlers into modmain
+- Separate follow and push behaviours
 
 ### Fixed
 
-- Crash when lag compensation has been turned off
+- Fix crash when lag compensation has been turned off
 
-## [0.3.0][] - 2019-08-18
+## [0.3.0] - 2019-08-18
 
 ### Added
 
-- Support for following/pushing a Tent sleeper
-- Support for pushing
+- Add support for following/pushing a Tent sleeper
+- Add support for pushing
 
-## [0.2.0][] - 2019-08-17
+## [0.2.0] - 2019-08-17
 
 ### Removed
 
-- Leader initialization if a leader didn't change
+- Remove leader initialization if a leader didn't change
 
 ### Fixed
 
-- Delay after approaching a leader
-- Delay before following a new leader
+- Fix delay after approaching a leader
+- Fix delay before following a new leader
 
 ## 0.1.0 - 2019-08-15
 
