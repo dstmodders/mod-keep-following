@@ -11,15 +11,7 @@ description = [[Version: ]]
     .. version
     .. [[:]]
     .. "\n"
-    .. [[- Added compatibility configuration]]
-    .. "\n"
-    .. [[- Changed following configurations]]
-    .. "\n"
-    .. [[- Improved interruptions behaviour]]
-    .. "\n"
-    .. [[- Improved keybinds configurations]]
-    .. "\n"
-    .. [[- Improved mouse overrides]]
+    .. [[- Fixed built-in character actions changing]]
 author = "Depressed DST Modders"
 api_version = 10
 forumthread = ""
