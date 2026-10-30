@@ -55,7 +55,38 @@ SDK.Debug.ModConfigs()
 local _PUSH_WITH_RMB = GetModConfigData("push_with_rmb")
 local _REVERSE_BUTTONS = GetModConfigData("reverse_buttons")
 
-AddAction("MOD_KEEP_FOLLOWING_FOLLOW", "Follow", function(act)
+local function AddClientAction(id, str, fn)
+    -- Note: Use this function instead of the built-in AddAction. AddAction writes into ACTIONS.
+    -- This mod is client-only, and the game numbers a character's inherent actions by walking
+    -- pairs(ACTIONS). Those extra keys change that order on the client, so built-in actions show up
+    -- on the wrong characters.
+    local modname = env.modname
+    local action = _G.Action()
+
+    action.id = id
+    action.str = str
+    action.fn = fn
+    action.mod_name = modname
+
+    local mod_ids = _G.ACTION_MOD_IDS
+    if mod_ids[modname] == nil then
+        mod_ids[modname] = {}
+    end
+    table.insert(mod_ids[modname], action.id)
+    action.code = #mod_ids[modname]
+
+    local by_code = _G.MOD_ACTIONS_BY_ACTION_CODE
+    if by_code[modname] == nil then
+        by_code[modname] = {}
+    end
+    by_code[modname][action.code] = action
+
+    _G.STRINGS.ACTIONS[action.id] = action.str
+
+    return action
+end
+
+local ACTION_FOLLOW = AddClientAction("MOD_KEEP_FOLLOWING_FOLLOW", "Follow", function(act)
     local keepfollowing = SDK.Utils.Chain.Get(act, "doer", "components", "keepfollowing")
     if keepfollowing and act.doer and act.target then
         keepfollowing:Stop()
@@ -65,7 +96,7 @@ AddAction("MOD_KEEP_FOLLOWING_FOLLOW", "Follow", function(act)
     return false
 end)
 
-AddAction("MOD_KEEP_FOLLOWING_PUSH", "Push", function(act)
+local ACTION_PUSH = AddClientAction("MOD_KEEP_FOLLOWING_PUSH", "Push", function(act)
     local keepfollowing = SDK.Utils.Chain.Get(act, "doer", "components", "keepfollowing")
     if keepfollowing and act.doer and act.target then
         keepfollowing:Stop()
@@ -75,20 +106,24 @@ AddAction("MOD_KEEP_FOLLOWING_PUSH", "Push", function(act)
     return false
 end)
 
-AddAction("MOD_KEEP_FOLLOWING_TENT_FOLLOW", "Follow player in", function(act)
-    local keepfollowing = SDK.Utils.Chain.Get(act, "doer", "components", "keepfollowing")
-    if keepfollowing and act.doer and act.target then
-        local leader = SDK.Entity.GetTentSleeper(act.target)
-        if leader then
-            keepfollowing:Stop()
-            keepfollowing:StartFollowing(leader)
-            return true
+local ACTION_TENT_FOLLOW = AddClientAction(
+    "MOD_KEEP_FOLLOWING_TENT_FOLLOW",
+    "Follow player in",
+    function(act)
+        local keepfollowing = SDK.Utils.Chain.Get(act, "doer", "components", "keepfollowing")
+        if keepfollowing and act.doer and act.target then
+            local leader = SDK.Entity.GetTentSleeper(act.target)
+            if leader then
+                keepfollowing:Stop()
+                keepfollowing:StartFollowing(leader)
+                return true
+            end
         end
+        return false
     end
-    return false
-end)
+)
 
-AddAction(
+local ACTION_TENT_PUSH = AddClientAction(
     "MOD_KEEP_FOLLOWING_TENT_PUSH",
     _PUSH_WITH_RMB ~= _REVERSE_BUTTONS and "Push player" or "Push player in",
     function(act)
@@ -139,10 +174,10 @@ end)
 -- @section components
 
 local function IsOurAction(action)
-    return action == ACTIONS.MOD_KEEP_FOLLOWING_FOLLOW
-        or action == ACTIONS.MOD_KEEP_FOLLOWING_PUSH
-        or action == ACTIONS.MOD_KEEP_FOLLOWING_TENT_FOLLOW
-        or action == ACTIONS.MOD_KEEP_FOLLOWING_TENT_PUSH
+    return action == ACTION_FOLLOW
+        or action == ACTION_PUSH
+        or action == ACTION_TENT_FOLLOW
+        or action == ACTION_TENT_PUSH
 end
 
 SDK.OnLoadComponent("playeractionpicker", function(__self, player)
@@ -193,31 +228,31 @@ SDK.OnLoadComponent("playeractionpicker", function(__self, player)
 
             if target:HasTag("tent") and target:HasTag("hassleeper") then
                 if _PUSH_WITH_RMB then
-                    lmb = BufferedAction(player, target, ACTIONS.MOD_KEEP_FOLLOWING_TENT_FOLLOW)
+                    lmb = BufferedAction(player, target, ACTION_TENT_FOLLOW)
                 elseif TheInput:IsKeyDown(_KEY_PUSH) then
-                    lmb = BufferedAction(player, target, ACTIONS.MOD_KEEP_FOLLOWING_TENT_PUSH)
+                    lmb = BufferedAction(player, target, ACTION_TENT_PUSH)
                 elseif not TheInput:IsKeyDown(_KEY_PUSH) then
-                    lmb = BufferedAction(player, target, ACTIONS.MOD_KEEP_FOLLOWING_TENT_FOLLOW)
+                    lmb = BufferedAction(player, target, ACTION_TENT_FOLLOW)
                 end
             end
 
             if keepfollowing:CanBeLeader(target) then
                 if _PUSH_WITH_RMB then
-                    lmb = BufferedAction(player, target, ACTIONS.MOD_KEEP_FOLLOWING_FOLLOW)
+                    lmb = BufferedAction(player, target, ACTION_FOLLOW)
                 elseif TheInput:IsKeyDown(_KEY_PUSH) and keepfollowing:CanBePushed(target) then
-                    lmb = BufferedAction(player, target, ACTIONS.MOD_KEEP_FOLLOWING_PUSH)
+                    lmb = BufferedAction(player, target, ACTION_PUSH)
                 elseif not TheInput:IsKeyDown(_KEY_PUSH) then
-                    lmb = BufferedAction(player, target, ACTIONS.MOD_KEEP_FOLLOWING_FOLLOW)
+                    lmb = BufferedAction(player, target, ACTION_FOLLOW)
                 end
             end
 
             if _PUSH_WITH_RMB then
                 if target:HasTag("tent") and target:HasTag("hassleeper") then
-                    rmb = BufferedAction(player, target, ACTIONS.MOD_KEEP_FOLLOWING_TENT_PUSH)
+                    rmb = BufferedAction(player, target, ACTION_TENT_PUSH)
                 end
 
                 if keepfollowing:CanBeLeader(target) and keepfollowing:CanBePushed(target) then
-                    rmb = BufferedAction(player, target, ACTIONS.MOD_KEEP_FOLLOWING_PUSH)
+                    rmb = BufferedAction(player, target, ACTION_PUSH)
                 end
             end
 
@@ -362,17 +397,17 @@ SDK.OnLoadClass("widgets/targetindicator", function(__self, owner, target)
         if TheInput:IsKeyDown(_KEY_ACTION) then
             if keepfollowing:CanBeLeader(__target) then
                 if _PUSH_WITH_RMB then
-                    lmb = BufferedAction(player, __target, ACTIONS.MOD_KEEP_FOLLOWING_FOLLOW)
+                    lmb = BufferedAction(player, __target, ACTION_FOLLOW)
                 elseif TheInput:IsKeyDown(_KEY_PUSH) and keepfollowing:CanBePushed(__target) then
-                    lmb = BufferedAction(player, __target, ACTIONS.MOD_KEEP_FOLLOWING_PUSH)
+                    lmb = BufferedAction(player, __target, ACTION_PUSH)
                 elseif not TheInput:IsKeyDown(_KEY_PUSH) then
-                    lmb = BufferedAction(player, __target, ACTIONS.MOD_KEEP_FOLLOWING_FOLLOW)
+                    lmb = BufferedAction(player, __target, ACTION_FOLLOW)
                 end
             end
 
             if _PUSH_WITH_RMB then
                 if keepfollowing:CanBeLeader(__target) and keepfollowing:CanBePushed(__target) then
-                    rmb = BufferedAction(player, __target, ACTIONS.MOD_KEEP_FOLLOWING_PUSH)
+                    rmb = BufferedAction(player, __target, ACTION_PUSH)
                 end
             end
 
