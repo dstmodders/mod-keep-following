@@ -1,7 +1,7 @@
 ----
 -- Modmain.
 --
--- **Source Code:** [https://github.com/victorpopkov/dst-mod-keep-following](https://github.com/victorpopkov/dst-mod-keep-following)
+-- **Source Code:** [https://github.com/dstmodders/mod-keep-following](https://github.com/dstmodders/mod-keep-following)
 --
 -- @author Victor Popkov
 -- @copyright 2019
@@ -13,7 +13,7 @@ local _G = GLOBAL
 _G.MOD_KEEP_FOLLOWING_TEST = false
 local require = _G.require
 
-local Utils = require "keepfollowing/utils"
+local Utils = require("keepfollowing/utils")
 
 --- Globals
 -- @section globals
@@ -41,7 +41,7 @@ local TheSim = _G.TheSim
 local Debug
 
 if GetModConfigData("debug") then
-    Debug = require "keepfollowing/debug"
+    Debug = require("keepfollowing/debug")
     Debug:DoInit(modname)
     Debug:SetIsEnabled(true)
     Debug:DebugModConfigs()
@@ -176,7 +176,8 @@ end
 
 ACTION_FOLLOW = AddClientAction("MOD_KEEP_FOLLOWING_FOLLOW", "Follow", ActionFollow)
 ACTION_PUSH = AddClientAction("MOD_KEEP_FOLLOWING_PUSH", "Push", ActionPush)
-ACTION_TENT_FOLLOW = AddClientAction("MOD_KEEP_FOLLOWING_TENT_FOLLOW", "Follow player in", ActionTentFollow)
+ACTION_TENT_FOLLOW =
+    AddClientAction("MOD_KEEP_FOLLOWING_TENT_FOLLOW", "Follow player in", ActionTentFollow)
 ACTION_TENT_PUSH = AddClientAction(
     "MOD_KEEP_FOLLOWING_TENT_PUSH",
     _PUSH_WITH_RMB and "Push player" or "Push player in",
@@ -222,14 +223,14 @@ local function AddPlayerPostInit(onActivatedFn, onDeactivatedFn)
     DebugString("Game ID -", TheSim:GetGameID())
 
     if IsDST() then
-        env.AddPrefabPostInit("world", function(_world)
-            _world:ListenForEvent("playeractivated", function(world, player)
+        env.AddPrefabPostInit("world", function(world)
+            world:ListenForEvent("playeractivated", function(_, player)
                 if player == _G.ThePlayer then
                     onActivatedFn(player, world)
                 end
             end)
 
-            _world:ListenForEvent("playerdeactivated", function(_, player)
+            world:ListenForEvent("playerdeactivated", function(_, player)
                 if player == _G.ThePlayer then
                     onDeactivatedFn(player)
                 end
@@ -254,8 +255,8 @@ local function PlayerActionPickerPostInit(playeractionpicker, player)
     --
 
     local OldDoGetMouseActions = playeractionpicker.DoGetMouseActions
-    playeractionpicker.DoGetMouseActions = function(self, position, _target)
-        local lmb, rmb = OldDoGetMouseActions(self, position, _target)
+    playeractionpicker.DoGetMouseActions = function(self, position, given_target)
+        local lmb, rmb = OldDoGetMouseActions(self, position, given_target)
         if TheInput:IsKeyDown(_KEY_ACTION) then
             local keepfollowing = player.components.keepfollowing
             local buffered = self.inst:GetBufferedAction()
@@ -276,7 +277,8 @@ local function PlayerActionPickerPostInit(playeractionpicker, player)
             -- (threads). For example, ActionQueue Reborn will always try to force their action if
             -- entities have already been selected. We can adapt our mod for such cases to improve
             -- compatibility but this is the only bulletproof way to cover the most.
-            if buffered
+            if
+                buffered
                 and not IsOurAction(buffered.action)
                 and buffered.action ~= ACTIONS.WALKTO
             then
@@ -344,7 +346,8 @@ local function PlayerControllerPostInit(playercontroller, player)
     -- enabled. However, I don't see any valid reason to do that.
     local function ClearActionQueueRebornEntities()
         local actionqueuer = player.components.actionqueuer
-        if not actionqueuer
+        if
+            not actionqueuer
             or not actionqueuer.ClearActionThread
             or not actionqueuer.ClearSelectionThread
             or not actionqueuer.ClearSelectedEntities
@@ -406,7 +409,8 @@ local function PlayerControllerPostInit(playercontroller, player)
     if _COMPATIBILITY == "recommended" then
         local OldOnLeftClick = playercontroller.OnLeftClick
         playercontroller.OnLeftClick = function(self, down)
-            if not down
+            if
+                not down
                 and not self:IsAOETargeting()
                 and not TheInput:GetHUDEntityUnderMouse()
                 and OurMouseAction(self:GetLeftMouseAction())
@@ -419,7 +423,8 @@ local function PlayerControllerPostInit(playercontroller, player)
         if _PUSH_WITH_RMB then
             local OldOnRightClick = playercontroller.OnRightClick
             playercontroller.OnRightClick = function(self, down)
-                if not down
+                if
+                    not down
                     and not self:IsAOETargeting()
                     and not TheInput:GetHUDEntityUnderMouse()
                     and OurMouseAction(self:GetRightMouseAction())

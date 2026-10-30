@@ -68,7 +68,7 @@ install:
 		--exclude 'spec/' \
 		--exclude 'workshop/' \
 		. \
-		"${DST_MODS}/dst-mod-keep-following/"
+		"${DST_MODS}/mod-keep-following/"
 
 ldoc:
 	@find ./doc/* -type f -not -name Dockerfile -not -name docker-stack.yml -not -wholename ./doc/ldoc/ldoc.css -delete
@@ -113,7 +113,7 @@ testlist:
 
 uninstall:
 	@:$(call check_defined, DST_MODS)
-	@rm -Rf "${DST_MODS}/dst-mod-keep-following/"
+	@rm -Rf "${DST_MODS}/mod-keep-following/"
 
 workshop:
 	@rm -Rf ./workshop/

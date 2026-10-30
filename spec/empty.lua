@@ -1,4 +1,3 @@
-Empty = function()
-end
+Empty = function() end
 
 return Empty

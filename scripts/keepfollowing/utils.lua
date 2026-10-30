@@ -8,7 +8,7 @@
 -- 1. Be a non-mod specific and isolated which can be reused in my other mods.
 -- 2. Be a mod specific and isolated which can be used between classes/modules.
 --
--- **Source Code:** [https://github.com/victorpopkov/dst-mod-keep-following](https://github.com/victorpopkov/dst-mod-keep-following)
+-- **Source Code:** [https://github.com/dstmodders/mod-keep-following](https://github.com/dstmodders/mod-keep-following)
 --
 -- @module Utils
 --
@@ -62,8 +62,7 @@ function Utils.AddDebugMethods(dest)
         end
     else
         for _, v in pairs(methods) do
-            dest[v] = function()
-            end
+            dest[v] = function() end
         end
     end
 end
@@ -218,15 +217,16 @@ end
 -- @treturn boolean
 function Utils.HideChangelog(modname, enable)
     if modname and enable and not BaseGetModInfo then
-        BaseGetModInfo =  _G.KnownModIndex.GetModInfo
-        _G.KnownModIndex.GetModInfo = function(_self, _modname)
-            if _modname == modname
-                and _self.savedata
-                and _self.savedata.known_mods
-                and _self.savedata.known_mods[modname]
+        BaseGetModInfo = _G.KnownModIndex.GetModInfo
+        _G.KnownModIndex.GetModInfo = function(self, known_modname)
+            if
+                known_modname == modname
+                and self.savedata
+                and self.savedata.known_mods
+                and self.savedata.known_mods[modname]
             then
                 local TrimString = _G.TrimString
-                local modinfo = _self.savedata.known_mods[modname].modinfo
+                local modinfo = self.savedata.known_mods[modname].modinfo
                 if modinfo and type(modinfo.description) == "string" then
                     local changelog = modinfo.description:find("v" .. modinfo.version, 0, true)
                     if type(changelog) == "number" then
@@ -234,7 +234,7 @@ function Utils.HideChangelog(modname, enable)
                     end
                 end
             end
-            return BaseGetModInfo(_self, _modname)
+            return BaseGetModInfo(self, known_modname)
         end
         return true
     elseif BaseGetModInfo then

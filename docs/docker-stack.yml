@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  docs:
+    image: '${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}'
+    environment:
+      TZ: '${DOCS_TZ}'
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - 'node.hostname == ${DOCKER_STACK_NODE_HOSTNAME}'
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      labels:
+        # Traefik (General)
+        - 'traefik.enable=true'
+        # Traefik (Services)
+        - 'traefik.http.services.${DOCS_TRAEFIK_SERVICE_NAME}.loadbalancer.server.port=80'
+        # Traefik (Routers - HTTP)
+        - 'traefik.http.routers.${DOCS_TRAEFIK_HTTP_ROUTER_NAME}.entrypoints=${DOCS_TRAEFIK_HTTP_ROUTER_ENTRYPOINTS}'
+        - 'traefik.http.routers.${DOCS_TRAEFIK_HTTP_ROUTER_NAME}.middlewares=${DOCS_TRAEFIK_HTTP_ROUTER_MIDDLEWARES}'
+        - 'traefik.http.routers.${DOCS_TRAEFIK_HTTP_ROUTER_NAME}.rule=Host(`${DOCS_TRAEFIK_HOST}`) && PathPrefix(`${DOCS_TRAEFIK_PATH_PREFIX}`)'
+        - 'traefik.http.routers.${DOCS_TRAEFIK_HTTP_ROUTER_NAME}.service=${DOCS_TRAEFIK_SERVICE_NAME}'
+        # Traefik (Routers - HTTPS)
+        - 'traefik.http.routers.${DOCS_TRAEFIK_HTTPS_ROUTER_NAME}.entrypoints=${DOCS_TRAEFIK_HTTPS_ROUTER_ENTRYPOINTS}'
+        - 'traefik.http.routers.${DOCS_TRAEFIK_HTTPS_ROUTER_NAME}.middlewares=${DOCS_TRAEFIK_HTTPS_ROUTER_MIDDLEWARES}'
+        - 'traefik.http.routers.${DOCS_TRAEFIK_HTTPS_ROUTER_NAME}.rule=Host(`${DOCS_TRAEFIK_HOST}`) && PathPrefix(`${DOCS_TRAEFIK_PATH_PREFIX}`)'
+        - 'traefik.http.routers.${DOCS_TRAEFIK_HTTPS_ROUTER_NAME}.service=${DOCS_TRAEFIK_SERVICE_NAME}'
+
+networks:
+  default:
+    name: '${DOCS_DOCKER_STACK_NETWORK}'
+    external: true

@@ -1,4 +1,4 @@
-require "busted.runner"()
+require("busted.runner")()
 
 describe("KeepFollowing", function()
     -- setup
@@ -11,7 +11,7 @@ describe("KeepFollowing", function()
 
     setup(function()
         -- match
-        match = require "luassert.match"
+        match = require("luassert.match")
 
         -- debug
         DebugSpyTerm()
@@ -122,7 +122,7 @@ describe("KeepFollowing", function()
             }),
         })
 
-        KeepFollowing = require "components/keepfollowing"
+        KeepFollowing = require("components/keepfollowing")
         keepfollowing = KeepFollowing(inst)
 
         -- debug
@@ -136,7 +136,7 @@ describe("KeepFollowing", function()
                 StartUpdatingComponent = spy.new(Empty),
             }
 
-            KeepFollowing = require "components/keepfollowing"
+            KeepFollowing = require("components/keepfollowing")
             keepfollowing = KeepFollowing(inst)
         end)
 
@@ -238,12 +238,7 @@ describe("KeepFollowing", function()
                 assert.spy(GetPlatformAtPoint).was_called(0)
                 fn()
                 assert.spy(GetPlatformAtPoint).was_called(1)
-                assert.spy(GetPlatformAtPoint).was_called_with(
-                    match.is_ref(world.Map),
-                    1,
-                    0,
-                    -1
-                )
+                assert.spy(GetPlatformAtPoint).was_called_with(match.is_ref(world.Map), 1, 0, -1)
             end)
 
             it("should return true", function()
@@ -321,12 +316,9 @@ describe("KeepFollowing", function()
                 assert.spy(world.Map.IsPassableAtPoint).was_called(0)
                 keepfollowing._IsPassable(world, pos)
                 assert.spy(world.Map.IsPassableAtPoint).was_called(1)
-                assert.spy(world.Map.IsPassableAtPoint).was_called_with(
-                    match.is_ref(world.Map),
-                    1,
-                    0,
-                    -1
-                )
+                assert
+                    .spy(world.Map.IsPassableAtPoint)
+                    .was_called_with(match.is_ref(world.Map), 1, 0, -1)
             end)
 
             it("should return true", function()
@@ -358,22 +350,18 @@ describe("KeepFollowing", function()
                     assert.spy(_G.SendRPCToServer).was_called(0)
                     enable_fn()
                     assert.spy(_G.SendRPCToServer).was_called(1)
-                    assert.spy(_G.SendRPCToServer).was_called_with(
-                        match.is_ref(_G.RPC.LeftClick),
-                        _G.ACTIONS.WALKTO.code,
-                        1,
-                        -1
-                    )
+                    local left_click = match.is_ref(_G.RPC.LeftClick)
+                    local walkto = _G.ACTIONS.WALKTO.code
+                    assert.spy(_G.SendRPCToServer).was_called_with(left_click, walkto, 1, -1)
                 end)
 
                 it("should call inst:EnableMovementPrediction() with true", function()
                     assert.spy(_inst.EnableMovementPrediction).was_called(0)
                     enable_fn()
                     assert.spy(_inst.EnableMovementPrediction).was_called(1)
-                    assert.spy(_inst.EnableMovementPrediction).was_called_with(
-                        match.is_ref(_inst),
-                        true
-                    )
+                    assert
+                        .spy(_inst.EnableMovementPrediction)
+                        .was_called_with(match.is_ref(_inst), true)
                 end)
 
                 it("should return true", function()
@@ -392,19 +380,18 @@ describe("KeepFollowing", function()
                     assert.spy(_inst.components.locomotor.Stop).was_called(0)
                     disable_fn()
                     assert.spy(_inst.components.locomotor.Stop).was_called(1)
-                    assert.spy(_inst.components.locomotor.Stop).was_called_with(
-                        match.is_ref(_inst.components.locomotor)
-                    )
+                    assert
+                        .spy(_inst.components.locomotor.Stop)
+                        .was_called_with(match.is_ref(_inst.components.locomotor))
                 end)
 
                 it("should call inst:EnableMovementPrediction() with false", function()
                     assert.spy(_inst.EnableMovementPrediction).was_called(0)
                     disable_fn()
                     assert.spy(_inst.EnableMovementPrediction).was_called(1)
-                    assert.spy(_inst.EnableMovementPrediction).was_called_with(
-                        match.is_ref(_inst),
-                        false
-                    )
+                    assert
+                        .spy(_inst.EnableMovementPrediction)
+                        .was_called_with(match.is_ref(_inst), false)
                 end)
 
                 it("should return false", function()
@@ -472,7 +459,7 @@ describe("KeepFollowing", function()
                     disable_fn()
                     DebugSpyAssertWasCalled("DebugString", 1, {
                         "Movement prediction:",
-                        "disabled"
+                        "disabled",
                     })
                 end)
             end)
@@ -542,12 +529,9 @@ describe("KeepFollowing", function()
                     assert.spy(GetPlatformAtPoint).was_called(0)
                     keepfollowing:IsLeaderOnPlatform()
                     assert.spy(GetPlatformAtPoint).was_called(1)
-                    assert.spy(GetPlatformAtPoint).was_called_with(
-                        match.is_ref(keepfollowing.world.Map),
-                        1,
-                        0,
-                        -1
-                    )
+                    assert
+                        .spy(GetPlatformAtPoint)
+                        .was_called_with(match.is_ref(keepfollowing.world.Map), 1, 0, -1)
                 end)
 
                 it("should return true", function()
@@ -560,8 +544,8 @@ describe("KeepFollowing", function()
             local function TestHasValidTag(tag, result)
                 describe('and has a "' .. tag .. '" tag', function()
                     before_each(function()
-                        entity.HasTag = spy.new(function(_, _tag)
-                            return _tag == tag
+                        entity.HasTag = spy.new(function(_, entity_tag)
+                            return entity_tag == tag
                         end)
                     end)
 
@@ -630,18 +614,16 @@ describe("KeepFollowing", function()
 
                 describe("and the passed entity has a " .. name .. " collision group", function()
                     before_each(function()
-                        entity.Physics.GetCollisionGroup = spy.new(
-                            ReturnValueFn(group)
-                        )
+                        entity.Physics.GetCollisionGroup = spy.new(ReturnValueFn(group))
                     end)
 
                     it("should call entity.Physics:GetCollisionGroup()", function()
                         assert.spy(entity.Physics.GetCollisionGroup).was_called(0)
                         keepfollowing:CanBePushed(entity)
                         assert.spy(entity.Physics.GetCollisionGroup).was_called(called)
-                        assert.spy(entity.Physics.GetCollisionGroup).was_called_with(
-                            match.is_ref(entity.Physics)
-                        )
+                        assert
+                            .spy(entity.Physics.GetCollisionGroup)
+                            .was_called_with(match.is_ref(entity.Physics))
                     end)
 
                     it("should return false", function()
@@ -687,10 +669,9 @@ describe("KeepFollowing", function()
                     assert.spy(keepfollowing.inst.HasTag).was_called(0)
                     keepfollowing:CanBePushed(entity)
                     assert.spy(keepfollowing.inst.HasTag).was_called(1)
-                    assert.spy(keepfollowing.inst.HasTag).was_called_with(
-                        match.is_ref(keepfollowing.inst),
-                        "playerghost"
-                    )
+                    assert
+                        .spy(keepfollowing.inst.HasTag)
+                        .was_called_with(match.is_ref(keepfollowing.inst), "playerghost")
                 end)
 
                 describe('and the passed entity has a "player" tag', function()
@@ -735,7 +716,7 @@ describe("KeepFollowing", function()
                 end)
             end)
 
-            describe('when the mass difference is <= 925', function()
+            describe("when the mass difference is <= 925", function()
                 before_each(function()
                     entity.Physics.GetMass = spy.new(ReturnValueFn(1000))
                     keepfollowing.inst.Physics.GetMass = spy.new(ReturnValueFn(75))
@@ -746,7 +727,7 @@ describe("KeepFollowing", function()
                 end)
             end)
 
-            describe('when the mass difference is > 925', function()
+            describe("when the mass difference is > 925", function()
                 before_each(function()
                     entity.Physics.GetMass = spy.new(ReturnValueFn(9999))
                     keepfollowing.inst.Physics.GetMass = spy.new(ReturnValueFn(75))
@@ -757,12 +738,12 @@ describe("KeepFollowing", function()
                 end)
             end)
 
-            describe('when self.inst mass is 1 (player is a ghost)', function()
+            describe("when self.inst mass is 1 (player is a ghost)", function()
                 before_each(function()
                     keepfollowing.inst.Physics.GetMass = spy.new(ReturnValueFn(1))
                 end)
 
-                describe('and the mass difference is <= 10', function()
+                describe("and the mass difference is <= 10", function()
                     before_each(function()
                         entity.Physics.GetMass = spy.new(ReturnValueFn(10))
                     end)
@@ -772,7 +753,7 @@ describe("KeepFollowing", function()
                     end)
                 end)
 
-                describe('and the mass difference is > 10', function()
+                describe("and the mass difference is > 10", function()
                     before_each(function()
                         entity.Physics.GetMass = spy.new(ReturnValueFn(75))
                     end)
@@ -786,7 +767,7 @@ describe("KeepFollowing", function()
 
         describe("CanBeLeader", function()
             local function TestEntityAndInstAreSame()
-                describe('and self.inst is the same as the passed entity', function()
+                describe("and self.inst is the same as the passed entity", function()
                     before_each(function()
                         keepfollowing.inst = entity
                     end)
@@ -808,14 +789,13 @@ describe("KeepFollowing", function()
                     assert.spy(keepfollowing.CanBeFollowed).was_called(0)
                     keepfollowing:CanBeLeader(entity)
                     assert.spy(keepfollowing.CanBeFollowed).was_called(1)
-                    assert.spy(keepfollowing.CanBeFollowed).was_called_with(
-                        match.is_ref(keepfollowing),
-                        match.is_ref(entity)
-                    )
+                    assert
+                        .spy(keepfollowing.CanBeFollowed)
+                        .was_called_with(match.is_ref(keepfollowing), match.is_ref(entity))
                 end)
             end
 
-            describe('when self:CanBeFollowed() returns true', function()
+            describe("when self:CanBeFollowed() returns true", function()
                 before_each(function()
                     keepfollowing.CanBeFollowed = spy.new(ReturnValueFn(true))
                 end)
@@ -828,7 +808,7 @@ describe("KeepFollowing", function()
                 end)
             end)
 
-            describe('when self:CanBeFollowed() returns false', function()
+            describe("when self:CanBeFollowed() returns false", function()
                 before_each(function()
                     keepfollowing.CanBeFollowed = spy.new(ReturnValueFn(false))
                 end)
@@ -926,8 +906,8 @@ describe("KeepFollowing", function()
             describe("FindClosestInvisiblePlayerInRange", function()
                 describe("when there is an invisible player in the range", function()
                     it("should return the player and the squared range", function()
-                        local closest, range_sq = keepfollowing
-                            ._FindClosestInvisiblePlayerInRange(1, 0, -1, 27)
+                        local closest, range_sq =
+                            keepfollowing._FindClosestInvisiblePlayerInRange(1, 0, -1, 27)
                         assert.is_equal(100001, closest.GUID)
                         assert.is_equal(9, range_sq)
                         assert.is_false(closest.entity:IsVisible())
@@ -936,8 +916,8 @@ describe("KeepFollowing", function()
 
                 describe("when there is no invisible player in the range", function()
                     it("should return nil values", function()
-                        local closest, range_sq = keepfollowing
-                            ._FindClosestInvisiblePlayerInRange(1, 0, -1, 3)
+                        local closest, range_sq =
+                            keepfollowing._FindClosestInvisiblePlayerInRange(1, 0, -1, 3)
                         assert.is_nil(closest)
                         assert.is_nil(range_sq)
                     end)
@@ -1006,7 +986,8 @@ describe("KeepFollowing", function()
                         DebugSpyAssertWasCalled(
                             "DebugString",
                             1,
-                            "Component sleepingbag is not available")
+                            "Component sleepingbag is not available"
+                        )
                     end)
 
                     it("should return nil", function()
@@ -1110,10 +1091,9 @@ describe("KeepFollowing", function()
                             assert.spy(keepfollowing.MovementPrediction).was_called(0)
                             keepfollowing:StartFollowing(leader)
                             assert.spy(keepfollowing.MovementPrediction).was_called(1)
-                            assert.spy(keepfollowing.MovementPrediction).was_called_with(
-                                match.is_ref(keepfollowing),
-                                true
-                            )
+                            assert
+                                .spy(keepfollowing.MovementPrediction)
+                                .was_called_with(match.is_ref(keepfollowing), true)
                         end)
 
                         it("should return false", function()
@@ -1136,10 +1116,9 @@ describe("KeepFollowing", function()
                             assert.spy(keepfollowing.MovementPrediction).was_called(0)
                             keepfollowing:StartFollowing(leader)
                             assert.spy(keepfollowing.MovementPrediction).was_called(1)
-                            assert.spy(keepfollowing.MovementPrediction).was_called_with(
-                                match.is_ref(keepfollowing),
-                                false
-                            )
+                            assert
+                                .spy(keepfollowing.MovementPrediction)
+                                .was_called_with(match.is_ref(keepfollowing), false)
                         end)
 
                         it("should return false", function()
@@ -1235,9 +1214,9 @@ describe("KeepFollowing", function()
                     assert.spy(keepfollowing.StartFollowingThread).was_called(0)
                     keepfollowing:StartFollowing(leader)
                     assert.spy(keepfollowing.StartFollowingThread).was_called(1)
-                    assert.spy(keepfollowing.StartFollowingThread).was_called_with(
-                        match.is_ref(keepfollowing)
-                    )
+                    assert
+                        .spy(keepfollowing.StartFollowingThread)
+                        .was_called_with(match.is_ref(keepfollowing))
                 end)
 
                 it("should return true", function()
@@ -1421,10 +1400,9 @@ describe("KeepFollowing", function()
                             assert.spy(keepfollowing.MovementPrediction).was_called(0)
                             keepfollowing:StartPushing(leader)
                             assert.spy(keepfollowing.MovementPrediction).was_called(1)
-                            assert.spy(keepfollowing.MovementPrediction).was_called_with(
-                                match.is_ref(keepfollowing),
-                                false
-                            )
+                            assert
+                                .spy(keepfollowing.MovementPrediction)
+                                .was_called_with(match.is_ref(keepfollowing), false)
                         end)
 
                         it("should return false", function()
@@ -1558,9 +1536,9 @@ describe("KeepFollowing", function()
                     assert.spy(keepfollowing.StartPushingThread).was_called(0)
                     keepfollowing:StartPushing(leader)
                     assert.spy(keepfollowing.StartPushingThread).was_called(1)
-                    assert.spy(keepfollowing.StartPushingThread).was_called_with(
-                        match.is_ref(keepfollowing)
-                    )
+                    assert
+                        .spy(keepfollowing.StartPushingThread)
+                        .was_called_with(match.is_ref(keepfollowing))
                 end)
 
                 it("should return true", function()
