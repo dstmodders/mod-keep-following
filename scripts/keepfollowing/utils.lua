@@ -8,7 +8,7 @@
 -- 1. Be a non-mod specific and isolated which can be reused in my other mods.
 -- 2. Be a mod specific and isolated which can be used between classes/modules.
 --
--- **Source Code:** [https://github.com/victorpopkov/dst-mod-keep-following](https://github.com/victorpopkov/dst-mod-keep-following)
+-- **Source Code:** [https://github.com/dstmodders/mod-keep-following](https://github.com/dstmodders/mod-keep-following)
 --
 -- @module Utils
 --

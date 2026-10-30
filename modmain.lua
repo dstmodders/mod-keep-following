@@ -1,7 +1,7 @@
 ----
 -- Modmain.
 --
--- **Source Code:** [https://github.com/victorpopkov/dst-mod-keep-following](https://github.com/victorpopkov/dst-mod-keep-following)
+-- **Source Code:** [https://github.com/dstmodders/mod-keep-following](https://github.com/dstmodders/mod-keep-following)
 --
 -- @author Victor Popkov
 -- @copyright 2019

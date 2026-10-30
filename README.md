@@ -1,8 +1,8 @@
 # dst-mod-keep-following
 
-[![GitHub Workflow CI Status][]](https://github.com/victorpopkov/dst-mod-keep-following/actions?query=workflow%3ACI)
-[![GitHub Workflow Documentation Status][]](https://github.com/victorpopkov/dst-mod-keep-following/actions?query=workflow%3ADocumentation)
-[![Codecov][]](https://codecov.io/gh/victorpopkov/dst-mod-keep-following)
+[![CI]](https://github.com/dstmodders/mod-keep-following/actions/workflows/ci.yml?query=branch%3Av0.21)
+[![CD]](https://github.com/dstmodders/mod-keep-following/actions/workflows/cd.yml?query=branch%3Av0.21)
+[![Codecov]](https://codecov.io/gh/dstmodders/mod-keep-following/branch/v0.21)
 
 [![Keep Following](preview.gif)](https://steamcommunity.com/sharedfiles/filedetails/?id=1835465557)
 
@@ -44,10 +44,7 @@ needs:
 
 The [LDoc][] documentation generator has been used for generating documentation,
 and the most recent version can be found here:
-http://github.victorpopkov.com/dst-mod-keep-following/
-
-- [Installation][]
-- [Development][]
+https://docs.dstmodders.com/keep-following/v0.21/
 
 ## Roadmap
 
@@ -59,12 +56,10 @@ https://trello.com/b/De8QnsZd/dst-mod-keep-following
 
 Released under the [MIT License](https://opensource.org/licenses/MIT).
 
-[codecov]: https://img.shields.io/codecov/c/github/victorpopkov/dst-mod-keep-following.svg
-[development]: readme/02-development.md
+[cd]: https://img.shields.io/github/actions/workflow/status/dstmodders/mod-keep-following/cd.yml?branch=v0.21&label=cd&logo=github
+[ci]: https://img.shields.io/github/actions/workflow/status/dstmodders/mod-keep-following/ci.yml?branch=v0.21&label=ci&logo=github
+[codecov]: https://img.shields.io/codecov/c/github/dstmodders/mod-keep-following/v0.21?logo=codecov&label=codecov
 [don't starve together]: https://www.klei.com/games/dont-starve-together
-[github workflow ci status]: https://img.shields.io/github/workflow/status/victorpopkov/dst-mod-keep-following/CI?label=CI
-[github workflow documentation status]: https://img.shields.io/github/workflow/status/victorpopkov/dst-mod-keep-following/Documentation?label=Documentation
-[installation]: readme/01-installation.md
 [ldoc]: https://stevedonovan.github.io/ldoc/
 [steam workshop]: https://steamcommunity.com/sharedfiles/filedetails/?id=1835465557
 [trello]: https://trello.com/

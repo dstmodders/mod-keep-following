@@ -3,7 +3,7 @@
 --
 -- Includes functionality for following and pushing a leader.
 --
--- **Source Code:** [https://github.com/victorpopkov/dst-mod-keep-following](https://github.com/victorpopkov/dst-mod-keep-following)
+-- **Source Code:** [https://github.com/dstmodders/mod-keep-following](https://github.com/dstmodders/mod-keep-following)
 --
 -- @classmod KeepFollowing
 --
