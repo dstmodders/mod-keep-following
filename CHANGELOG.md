@@ -21,6 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove "Hide Changelog" configuration
 - Remove changelog from modinfo
 
+## [0.21.1] - 2026-10-31
+
+### Fixed
+
+- Fix built-in character actions changing
+
 ## [0.21.0] - 2020-08-26
 
 ### Added
@@ -302,7 +308,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First release.
 
-[unreleased]: https://github.com/dstmodders/mod-keep-following/compare/v0.21.0...HEAD
+[unreleased]: https://github.com/dstmodders/mod-keep-following/compare/v0.21.1...HEAD
+[0.21.1]: https://github.com/dstmodders/mod-keep-following/compare/v0.21.0...v0.21.1
 [0.21.0]: https://github.com/dstmodders/mod-keep-following/compare/v0.20.1...v0.21.0
 [0.20.1]: https://github.com/dstmodders/mod-keep-following/compare/v0.20.0...v0.20.1
 [0.20.0]: https://github.com/dstmodders/mod-keep-following/compare/v0.19.0...v0.20.0
